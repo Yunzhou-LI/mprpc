@@ -1,0 +1,26 @@
+//声明了protobuf版本
+syntax = "proto3";
+//声明了代码所在的包 相当于名字空间
+package fixbug;
+
+//定义下面的option,表示生成service服务类和rpc方法描述，若不设置option,则默认不会生成服务类和方法描述
+option cc_generic_services = true;
+message ResultInfo
+{
+    int32 errcode = 1;
+    bytes errmsg = 2;
+}
+message GetFriendListRequest
+{   
+    uint32 userid = 1;
+}
+message GetFriendListResponse
+{   //在protobuf中，字符串常改成bytes，可节省编码成字符的转换，提高效率
+    ResultInfo result= 1;
+    repeated bytes friends = 2;
+}
+
+service FriendServcieRpc
+{
+    rpc GetFriendList(GetFriendListRequest) returns (GetFriendListResponse);
+}

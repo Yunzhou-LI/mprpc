@@ -1,0 +1,38 @@
+//声明了protobuf版本
+syntax = "proto3";
+//声明了代码所在的包 相当于名字空间
+package fixbug;
+
+//定义下面的option,表示生成service服务类和rpc方法描述，若不设置option,则默认不会生成服务类和方法描述
+option cc_generic_services = true;
+message ResultInfo
+{
+    int32 errcode = 1;
+    bytes errmsg = 2;
+}
+message LoginRequest
+{   //在protobuf中，字符串常改成bytes，可节省编码成字符的转换，提高效率
+    bytes name=1;
+    bytes pwd = 2;
+}
+message LoginResponse
+{   
+    ResultInfo result= 1;
+    bool success = 2;
+}
+message RegisterRequest
+{   //在protobuf中，字符串常改成bytes，可节省编码成字符的转换，提高效率
+    uint32 id = 1;
+    bytes name=2;
+    bytes pwd = 3;
+}
+message RegisterResponse
+{   
+    ResultInfo result= 1;
+    bool success = 2;
+}
+service UserServiceRpc
+{
+    rpc Login(LoginRequest) returns(LoginResponse);
+    rpc Register(RegisterRequest) returns (RegisterResponse);
+}
